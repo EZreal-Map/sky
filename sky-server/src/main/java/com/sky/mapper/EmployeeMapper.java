@@ -41,4 +41,7 @@ public interface EmployeeMapper {
     List<Employee> pageQuery(String name, Integer startPageNum, Integer pageLimit);
 
     void update(Employee employee);
+
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Integer id);
 }
