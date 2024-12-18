@@ -2,4 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.EmployeeMapper">
+    <select id="pageQuery" resultType="com.sky.entity.Employee">
+        select * from employee
+        <if test="name != null and name != ''">
+            <!-- where name = #{name} -->
+            <!-- 使用like模糊查询 -->
+            where name like concat('%', #{name},'%')
+        </if>
+        order by create_time desc
+        limit #{startPageNum}, #{pageLimit}
+    </select>
+    <select id="totalEmployee" resultType="java.lang.Integer">
+        select count(*) from employee
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+        </where>
+<!--        <if test="name != null and name != ''">-->
+<!--            &lt;!&ndash; where name = #{name} &ndash;&gt;-->
+<!--            &lt;!&ndash; 使用like模糊查询 &ndash;&gt;-->
+<!--            where name like concat('%', #{name},'%')-->
+<!--        </if>-->
+    </select>
 </mapper>

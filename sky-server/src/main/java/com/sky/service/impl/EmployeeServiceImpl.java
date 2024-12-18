@@ -6,20 +6,26 @@ import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
@@ -83,5 +89,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeMapper.insert(employee);
     }
+
+    @Override
+    public Result<PageResult> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        Integer total = employeeMapper.totalEmployee(employeePageQueryDTO);
+        log.info("total:{}", total);
+
+        Integer startPageNum = (employeePageQueryDTO.getPage() - 1)* employeePageQueryDTO.getPageSize();
+        List<Employee> record = employeeMapper.pageQuery(employeePageQueryDTO.getName(), startPageNum, employeePageQueryDTO.getPageSize());
+
+        PageResult pageResult = new PageResult(total, record);
+        return Result.success(pageResult);
+    }
+
 
 }
