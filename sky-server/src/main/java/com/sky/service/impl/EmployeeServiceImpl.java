@@ -102,5 +102,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Result.success(pageResult);
     }
 
+    @Override
+    public void setStatus(Integer status, Long id) {
+        Employee employee = new Employee();
+        employee.setStatus(status);
+        employee.setId(id);
+
+        // 容易忘记要更新下面2个属性
+        // 更新时间 updateTime
+        // 更新人   updateUser
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(id);
+        // 后面应该会统一处理公共字段自动填充
+
+        employeeMapper.update(employee);
+    }
+
 
 }
