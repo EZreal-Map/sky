@@ -77,15 +77,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // DTO之外的其他属性
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
         // 设置默认密码 123456
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
         // 设置createUser, updateUser的ID
-        Long currentId = BaseContext.getCurrentId();
-        employee.setCreateUser(currentId);
-        employee.setUpdateUser(currentId);
+//        Long currentId = BaseContext.getCurrentId();
+//        employee.setCreateUser(currentId);
+//        employee.setUpdateUser(currentId);
 
         employeeMapper.insert(employee);
     }
@@ -111,8 +111,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 容易忘记要更新下面2个属性
         // 更新时间 updateTime
         // 更新人   updateUser
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(id);
+        // 已设置自动处理公共字段 AOP
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(id);
         // 后面应该会统一处理公共字段自动填充
 
         employeeMapper.update(employee);
@@ -128,11 +129,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
+        // 后面应该会统一处理公共字段自动填充
+//        employee.setUpdateTime(LocalDateTime.now());
 
-        employee.setUpdateTime(LocalDateTime.now());
-
-        Long currentId = BaseContext.getCurrentId();
-        employee.setUpdateUser(currentId);
+//        Long currentId = BaseContext.getCurrentId();
+//        employee.setUpdateUser(currentId);
         employeeMapper.update(employee);
 
     }
